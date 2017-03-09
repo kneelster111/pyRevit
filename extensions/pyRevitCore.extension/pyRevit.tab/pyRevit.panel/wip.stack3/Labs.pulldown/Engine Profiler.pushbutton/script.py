@@ -11,6 +11,7 @@ clr.AddReference('IronPython')
 from System.Collections.Generic import List
 # noinspection PyUnresolvedReferences
 import IronPython.Hosting
+import IronPython.Runtime
 
 
 TEST_UNIT = 100
@@ -25,6 +26,8 @@ def run():
     engine.SetSearchPaths(List[str]([PYTHON_LIB_DIR, MAIN_LIB_DIR]))
     runtime = engine.Runtime
     scope = runtime.CreateScope()
+    co = engine.GetCompilerOptions(scope)
+    # co.Module &= ~IronPython.Runtime.ModuleOptions.Optimized
     source = engine.CreateScriptSourceFromString(script)
     comped = source.Compile()
     comped.Execute(scope)
